@@ -23,7 +23,7 @@ export const DEFAULT_FILTERS: Filters = {
   q: "",
   platforms: [],
   categories: [],
-  kinds: ["app"],
+  kinds: [],
   languages: [],
   licenses: [],
   minStars: 0,
@@ -200,7 +200,8 @@ export function filtersFromParams(params: URLSearchParams): Filters {
     categories: list("category"),
     languages: list("lang"),
     licenses: list("license"),
-    kinds: kind === "all" ? [] : kind ? kind.split(",") : DEFAULT_FILTERS.kinds,
+    // "kind=all" comes from links made when Apps was the default type.
+    kinds: kind && kind !== "all" ? kind.split(",").filter(Boolean) : [],
     minStars: Number(params.get("stars")) || 0,
     fresh: Number(params.get("fresh")) || 0,
     sort: params.get("sort") === "growth" ? "growth" : "stars",
@@ -213,8 +214,7 @@ export function filtersToParams(filters: Filters): URLSearchParams {
   for (const [key, field] of Object.entries(LIST_KEYS)) {
     if (filters[field].length) params.set(key, filters[field].join(","));
   }
-  const kinds = filters.kinds.join(",");
-  if (kinds !== DEFAULT_FILTERS.kinds.join(",")) params.set("kind", kinds || "all");
+  if (filters.kinds.length) params.set("kind", filters.kinds.join(","));
   if (filters.minStars) params.set("stars", String(filters.minStars));
   if (filters.fresh) params.set("fresh", String(filters.fresh));
   if (filters.sort !== "stars") params.set("sort", filters.sort);

@@ -26,8 +26,8 @@ const names = (matches: number[]) => matches.map((i) => index.repos[i][0]);
 const all = { ...DEFAULT_FILTERS, kinds: [] };
 
 describe("search", () => {
-  it("keeps star order and filters by kind by default", () => {
-    expect(names(search(prepared, DEFAULT_FILTERS).matches)).toEqual(["acme/music-box", "acme/notely", "acme/fresh-old", "acme/fresh-new", "acme/fresh-flat"]);
+  it("keeps star order and filters by kind", () => {
+    expect(names(search(prepared, { ...all, kinds: ["app"] }).matches)).toEqual(["acme/music-box", "acme/notely", "acme/fresh-old", "acme/fresh-new", "acme/fresh-flat"]);
   });
 
   it("prefix matches every token across name, description and topics", () => {
@@ -79,14 +79,15 @@ describe("fresh view", () => {
 
 describe("url state", () => {
   it("round trips filters", () => {
-    const filters = { ...DEFAULT_FILTERS, q: "music", platforms: ["android", "ios"], kinds: [], minStars: 1000, fresh: 90, sort: "growth" as const };
+    const filters = { ...DEFAULT_FILTERS, q: "music", platforms: ["android", "ios"], kinds: ["app", "tool"], minStars: 1000, fresh: 90, sort: "growth" as const };
     const params = filtersToParams(filters);
-    expect(params.toString()).toBe("q=music&platform=android%2Cios&kind=all&stars=1000&fresh=90&sort=growth");
+    expect(params.toString()).toBe("q=music&platform=android%2Cios&kind=app%2Ctool&stars=1000&fresh=90&sort=growth");
     expect(filtersFromParams(params)).toEqual(filters);
   });
 
   it("omits defaults", () => {
     expect(filtersToParams(DEFAULT_FILTERS).toString()).toBe("");
     expect(filtersFromParams(new URLSearchParams())).toEqual(DEFAULT_FILTERS);
+    expect(filtersFromParams(new URLSearchParams("kind=all")).kinds).toEqual([]);
   });
 });

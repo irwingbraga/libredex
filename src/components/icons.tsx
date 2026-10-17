@@ -1,5 +1,5 @@
 import { Globe, Puzzle, Server, Sparkles, SquareTerminal } from "lucide-react";
-import { siAndroid, siApple, siLinux } from "simple-icons";
+import { siAndroid, siApple, siGithub, siLinux } from "simple-icons";
 
 type IconProps = { className?: string };
 
@@ -54,4 +54,8 @@ export function StarIcon({ className = "size-4" }: IconProps) {
       <path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z" />
     </svg>
   );
+}
+
+export function GitHubIcon({ className = "size-4" }: IconProps) {
+  return <Brand path={siGithub.path} className={className} />;
 }

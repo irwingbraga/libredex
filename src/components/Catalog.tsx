@@ -20,6 +20,7 @@ import {
 import { CATEGORIES, KINDS, PLATFORMS } from "@/lib/taxonomy";
 import { navigate, useLocationSearch, useTheme } from "@/lib/url-state";
 import { FacetPanel, PlatformRail } from "./Facets";
+import { GitHubIcon } from "./icons";
 import { RepoCard, RepoCardSkeleton } from "./RepoCard";
 import { RepoDrawer } from "./RepoDrawer";
 
@@ -179,13 +180,23 @@ export function Catalog({ initial }: { initial: InitialData }) {
           <span className="font-display text-2xl font-extrabold tracking-tight">Libredex</span>
         </Link>
         <div className="flex items-center gap-1">
+          <a
+            href="https://github.com/irwingbraga/libredex"
+            target="_blank"
+            rel="noreferrer"
+            className="grid size-10 place-items-center rounded-full text-muted hover:bg-sunken hover:text-ink"
+            aria-label="Libredex on GitHub"
+            title="Libredex on GitHub"
+          >
+            <GitHubIcon className="size-5" />
+          </a>
           <ThemeToggle />
         </div>
       </header>
 
       <section className="pt-6 pb-5 sm:pt-10">
         <h1 className="max-w-3xl font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-tight text-balance">
-          Open source apps for every platform, ranked by the stars people gave them.
+          Find awesome open source projects
         </h1>
       </section>
 
@@ -199,7 +210,7 @@ export function Catalog({ initial }: { initial: InitialData }) {
             value={filters.q}
             onChange={(e) => commit({ ...filters, q: e.target.value }, "replace")}
             onKeyDown={(e) => e.key === "Escape" && filters.q && commit({ ...filters, q: "" }, "replace")}
-            placeholder="Search apps, topics, owners"
+            placeholder="Search projects, topics, owners"
             autoComplete="off"
             spellCheck={false}
             className="h-14 w-full rounded-2xl border border-line bg-surface pr-14 pl-12 text-[17px] shadow-[0_1px_0_var(--line)] outline-none transition-colors placeholder:text-muted/80 focus:border-focus [&::-webkit-search-cancel-button]:hidden"
@@ -302,7 +313,7 @@ export function Catalog({ initial }: { initial: InitialData }) {
           ) : repos.length === 0 ? (
             <EmptyState
               title="No projects match these filters."
-              body={filters.kinds.length ? "Try including libraries and tools, or remove a filter." : "Try a shorter search or remove a filter."}
+              body={filters.kinds.length ? "Try other types, or remove a filter." : "Try a shorter search or remove a filter."}
               action={
                 filters.kinds.length ? (
                   <button
